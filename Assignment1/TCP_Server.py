@@ -24,28 +24,35 @@ client,addr= server.accept()
 print "[=] Connection established with Client"
 
 #loop to maintain function
-list=[]
+
 while True:
 
-        #Receiving data from the client 
-        data = pickle.loads(client.recv(4096))
 
-        #data = pickle.loads(recvd_data)
-        print ('User input value: ' , data)
-        #convert input into a float
-        ##for i in range(data):
-         #       list.append(data)
-        #print("List values: ", list)
-        #square root the number if it is greater than 0
-        #if(data >= 0):
-             #   x = math.sqrt(data)
-          #      x = str(x)
-           #     client.send(x)
-        #if the number input is a negative number  we send this message to client
-       # elif(data < 0):
-         #       errormsg = 'Cannot find square root of negative number'
-         #       client.send(errormsg)
+        data = pickle.loads(client.recv(4096))
+        print 'User input value: ' , data
+
    
         max_value=max(data)
-        ms=pickle.dumps(max_value)
-        client.send(ms)
+        max_send=pickle.dumps(max_value)
+        print 'Max: ', max_value
+        client.send(max_send)
+
+        min_value= min(data)
+        min_send = pickle.dumps(min_value)
+        print 'Min: ', min_value
+        client.send(min_send)
+
+        sum_value= sum(data)
+        sum_send = pickle.dumps(sum_value)
+        print 'Sum: ', sum_value
+        client.send(sum_send)
+
+
+        avg_value = sum(data)/len(data)
+        avg_send = str(avg_value)
+        print 'Avg value :', float(avg_value)
+        client.send(avg_send)
+        break
+
+client.close()
+print 'Connection Closed'

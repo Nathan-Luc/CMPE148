@@ -9,16 +9,25 @@ list1=[]
 
 while True:
     
-    number = int(input("Enter list length"))
+    number = int(input("Enter list length "))
     for i in range(number):
         data = (int(input()))
         list1.append(data)
 
     sdata=pickle.dumps(list1)
     client.send(sdata)
-    print ('You entered the value: ' , list1)
+    print 'You entered the value: ' , list1
     
-    #sqt = client.recv(1024)
-    #print "Square root of input is ... " + sqt
-    max_value = pickle.loads(client.recv(1024))
-    print ('Max value: ', max_value)
+    max_value = pickle.loads(client.recv(4096))
+    print 'Max value: ', max_value
+
+    min_value = pickle.loads(client.recv(4096))
+    print 'Min value: ' , min_value
+   
+    sum_value = pickle.loads(client.recv(4096))
+    print 'Sum value: ', sum_value
+
+    avg_value = client.recv(4096)
+    print 'Avg value: ', avg_value
+
+  
