@@ -1,5 +1,7 @@
+from __future__ import division
 import socket
 import math
+import pickle
 #UDP protocol
 server = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
@@ -15,21 +17,32 @@ print '[=] Socket bind successful'
 
 #loop to maintain function
 while True:
+        data,addr = server.recvfrom(4096)
+        load = pickle.loads(data)
+        print 'User input value: ' , load
+        print 'Data recieved fron ' , addr
+   
+        max_value=max(load)
+        max_send=pickle.dumps(max_value)
+        print 'Max: ', max_value
+        server.sendto(max_send,addr)
 
-    #Receiving data from the client & address of client
-    data,addr = server.recvfrom(1024)
-    data = float(data)
+        min_value= min(load)
+        min_send = pickle.dumps(min_value)
+        print 'Min: ', min_value
+        server.sendto(min_send, addr)
 
-    #print on the serverside that the data has been received from such address 
-    print 'Data received from', addr 
+        sum_value= sum(load)
+        sum_send = pickle.dumps(sum_value)
+        print 'Sum: ', sum_value
+        server.sendto(sum_send, addr)
 
-    #square root the number if it is less than such
-    if(data >= 0):
-        x = math.sqrt(data)
-        x = str(x)
-        server.sendto(x, addr)
 
-    #if the number input is negative number we send this message to the client
-    elif(data < 0):
-        errormsg = 'Cannot find square root of negative number'
-        server.sendto(errormsg, addr)
+        avg_value = sum(load)/len(load)
+        avg_send = str(avg_value)
+        print 'Avg value :', float(avg_value)
+        server.sendto(avg_send,addr)
+        break
+
+server.close()
+print 'Connection Closed'

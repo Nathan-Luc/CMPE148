@@ -29,5 +29,6 @@ while True:
 
     avg_value = client.recv(4096)
     print 'Avg value: ', avg_value
-
+    break;
+client.close()
   
